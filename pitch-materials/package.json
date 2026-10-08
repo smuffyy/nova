@@ -1,0 +1,16 @@
+{
+  "name": "pitch-materials",
+  "version": "1.0.0",
+  "description": "| File | What | | --- | --- | | `one-pager.html` | Single-page leave-behind (print to PDF) | | `pitch-deck.html` | 12-slide investor/product pitch with market, pricing, and unit-econ numbers |",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}

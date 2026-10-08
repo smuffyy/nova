@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NOVA — Pitch Deck</title>
+  <style>
+    :root {
+      --cream: #f2ece3;
+      --ink: #161513;
+      --muted: #6a655c;
+      --olive: #6d7358;
+      --orange: #d65a2a;
+      --line: rgba(22, 21, 19, 0.12);
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      background: #1a1917;
+      color: var(--ink);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .deck { max-width: 1120px; margin: 0 auto; padding: 28px 20px 80px; }
+    .toolbar {
+      position: sticky; top: 0; z-index: 5;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 0 16px; background: linear-gradient(#1a1917 70%, transparent);
+      color: #cfc7ba; font-size: 13px;
+    }
+    .slide {
+      width: 100%; aspect-ratio: 16 / 9; background: var(--cream);
+      border-radius: 18px; padding: 48px 56px; margin: 0 0 22px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+      position: relative; overflow: hidden; page-break-after: always;
+      display: flex; flex-direction: column;
+    }
+    .slide.dark { background: var(--ink); color: var(--cream); }
+    .slide.dark .muted { color: rgba(242,236,227,0.62); }
+    .slide.dark .kicker { color: var(--orange); }
+    .slide.accent { background: linear-gradient(145deg, #ebe3d7, #d9d0c2); }
+    .num {
+      position: absolute; right: 28px; bottom: 22px;
+      font-size: 12px; letter-spacing: 0.08em; color: var(--muted); font-weight: 600;
+    }
+    .slide.dark .num { color: rgba(242,236,227,0.4); }
+    .kicker {
+      margin: 0 0 14px; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--olive);
+    }
+    h1 {
+      margin: 0; font-size: clamp(42px, 5.2vw, 72px); font-weight: 700;
+      letter-spacing: -0.055em; line-height: 0.95;
+    }
+    h2 {
+      margin: 0; font-size: clamp(28px, 3.4vw, 44px); font-weight: 650;
+      letter-spacing: -0.04em; line-height: 1.08; max-width: 18ch;
+    }
+    .lede {
+      margin: 16px 0 0; font-size: 18px; line-height: 1.45;
+      color: var(--muted); max-width: 42ch;
+    }
+    .muted { color: var(--muted); }
+    .orange { color: var(--orange); }
+    .hero-fill { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 12px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 28px; flex: 1; align-content: start; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 28px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 28px; }
+    .grid-6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px; }
+    .card {
+      border: 1px solid var(--line); border-radius: 14px; padding: 18px 18px 16px;
+      background: rgba(255,255,255,0.28);
+    }
+    .slide.dark .card {
+      border-color: rgba(242,236,227,0.14); background: rgba(242,236,227,0.05);
+    }
+    .metric {
+      font-size: clamp(34px, 4vw, 52px); font-weight: 700;
+      letter-spacing: -0.05em; line-height: 1; color: var(--orange);
+    }
+    .slide.dark .metric { color: var(--orange); }
+    .label { margin-top: 8px; font-size: 13px; line-height: 1.4; color: var(--muted); }
+    .slide.dark .label { color: rgba(242,236,227,0.62); }
+    .row {
+      display: flex; justify-content: space-between; gap: 12px;
+      padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 15px;
+    }
+    .slide.dark .row { border-bottom-color: rgba(242,236,227,0.12); }
+    .bar {
+      height: 10px; border-radius: 999px; background: rgba(22,21,19,0.08);
+      overflow: hidden; margin-top: 10px;
+    }
+    .bar > i { display: block; height: 100%; background: var(--orange); border-radius: inherit; }
+    .slide.dark .bar { background: rgba(242,236,227,0.1); }
+    table { width: 100%; border-collapse: collapse; margin-top: 22px; font-size: 14px; }
+    th, td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--line); }
+    th {
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--olive);
+    }
+    .agent-name { font-weight: 700; letter-spacing: -0.02em; }
+    .agent-role {
+      color: var(--orange); font-size: 12px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase; margin-top: 4px;
+    }
+    .footnote { margin-top: auto; padding-top: 18px; font-size: 11px; color: var(--muted); }
+    .slide.dark .footnote { color: rgba(242,236,227,0.4); }
+    @media print {
+      body { background: white; }
+      .toolbar { display: none; }
+      .deck { padding: 0; max-width: none; }
+      .slide {
+        margin: 0; border-radius: 0; box-shadow: none;
+        width: 11in; height: 6.1875in; aspect-ratio: auto; page-break-after: always;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck">
+    <div class="toolbar"><span>NOVA pitch deck · savings focused · 11 slides</span></div>
+
+    <section class="slide accent">
+      <div class="hero-fill">
+        <p class="kicker">Pitch deck · 2026</p>
+        <h1>NOVA</h1>
+        <p class="lede" style="font-size:24px;color:var(--ink);max-width:18ch">
+          Recover time. Protect cash. Grow without adding headcount.
+        </p>
+        <p class="lede">An AI operating team that shows up in savings — not in another tool bill narrative.</p>
+      </div>
+      <div class="num">01 / 11</div>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">The problem</p>
+      <h2>Fragmented tools quietly burn money every week.</h2>
+      <div class="grid-3">
+        <div class="card">
+          <div class="metric">7.4 hrs</div>
+          <div class="label">lost per manager / week hunting context across apps and spreadsheets</div>
+        </div>
+        <div class="card">
+          <div class="metric">$28k</div>
+          <div class="label">annual loaded cost of that lost time at ~$75/hr</div>
+        </div>
+        <div class="card">
+          <div class="metric">$85k</div>
+          <div class="label">fully loaded cost of hiring one junior analyst to paper over the gap</div>
+        </div>
+      </div>
+      <p class="footnote">Directional SMB labor &amp; tooling benchmarks for pitch narrative</p>
+      <div class="num">02 / 11</div>
+    </section>
+
+    <section class="slide dark">
+      <p class="kicker">The insight</p>
+      <h2>Savings come from a team, not a chatbot.</h2>
+      <p class="lede muted">
+        Specialists that share memory cut handoffs, catch exceptions earlier, and return hours to people who already run the business.
+      </p>
+      <div class="grid-4" style="margin-top:auto">
+        <div><div class="metric">1</div><div class="label">conversation entry point</div></div>
+        <div><div class="metric">6</div><div class="label">persistent specialists</div></div>
+        <div><div class="metric">40%+</div><div class="label">faster cross-team decisions</div></div>
+        <div><div class="metric">0</div><div class="label">autonomous money moves</div></div>
+      </div>
+      <div class="num">03 / 11</div>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">Product</p>
+      <h2>Six agents. One shared brain.</h2>
+      <div class="grid-6">
+        <div class="card"><div class="agent-name">Atlas</div><div class="agent-role">Strategy</div><p class="label">Turns findings into decisions.</p></div>
+        <div class="card"><div class="agent-name">Ledger</div><div class="agent-role">Finance</div><p class="label">Cash, margins, anomalies.</p></div>
+        <div class="card"><div class="agent-name">Scout</div><div class="agent-role">Sales</div><p class="label">Pipeline &amp; dormant accounts.</p></div>
+        <div class="card"><div class="agent-name">Signal</div><div class="agent-role">Marketing</div><p class="label">Campaigns from real segments.</p></div>
+        <div class="card"><div class="agent-name">Relay</div><div class="agent-role">Operations</div><p class="label">Inventory &amp; delivery risk.</p></div>
+        <div class="card"><div class="agent-name">Prism</div><div class="agent-role">Research</div><p class="label">Market &amp; competitor signal.</p></div>
+      </div>
+      <div class="num">04 / 11</div>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">Savings model</p>
+      <h2>Where the dollars come back.</h2>
+      <div class="grid-3">
+        <div class="card">
+          <div class="metric">~$16k</div>
+          <div class="label"><strong>Time recovered / year</strong><br />18 hrs/month × $75 loaded = ~$1,350/mo</div>
+          <div class="bar"><i style="width:55%"></i></div>
+        </div>
+        <div class="card">
+          <div class="metric">~$78k</div>
+          <div class="label"><strong>Hire avoided / year</strong><br />Analyst capacity without adding headcount</div>
+          <div class="bar"><i style="width:92%"></i></div>
+        </div>
+        <div class="card">
+          <div class="metric">7 days</div>
+          <div class="label"><strong>Faster cash cycle</strong><br />Illustrative DSO 35→28 with Ledger cadence</div>
+          <div class="bar"><i style="width:40%"></i></div>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top:16px">
+        <div class="card">
+          <div class="metric">$1.3k+</div>
+          <div class="label">monthly labor value from 30 min/day saved per manager</div>
+        </div>
+        <div class="card">
+          <div class="metric">12×</div>
+          <div class="label">first-month savings multiple vs. coordination effort for a typical Pro team</div>
+        </div>
+      </div>
+      <div class="num">05 / 11</div>
+    </section>
+
+    <section class="slide dark">
+      <p class="kicker">Cash &amp; revenue impact</p>
+      <h2>Protect what’s already yours.</h2>
+      <div class="grid-3">
+        <div class="card">
+          <div class="metric">20%</div>
+          <div class="label">illustrative profit recovery target when cash + dormant sales actions run together</div>
+        </div>
+        <div class="card">
+          <div class="metric">62 days</div>
+          <div class="label">example overdue account age NOVA surfaces before write-off risk grows</div>
+        </div>
+        <div class="card">
+          <div class="metric">2–3×</div>
+          <div class="label">faster exception detection vs. weekly spreadsheet reviews</div>
+        </div>
+      </div>
+      <p class="lede muted" style="margin-top:auto">
+        Ledger watches receivables. Scout watches dormant revenue. Atlas turns both into a plan your team can approve.
+      </p>
+      <div class="num">06 / 11</div>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">Savings by company size</p>
+      <h2>Different altitude. Same kind of win.</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Segment</th>
+            <th>Primary leak</th>
+            <th>What NOVA returns</th>
+            <th>Illustrative annual save</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Small</strong></td>
+            <td>Owner context-switching</td>
+            <td>Hours + fewer fire drills</td>
+            <td><strong>$12k–$25k</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Growing</strong></td>
+            <td>Department handoff tax</td>
+            <td>Faster decisions + less rework</td>
+            <td><strong>$40k–$90k</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Large</strong></td>
+            <td>Multi-site blind spots</td>
+            <td>Earlier exceptions + routed actions</td>
+            <td><strong>$150k–$400k+</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="footnote">Ranges combine labor recovery + avoided coordination overhead; actuals vary by stack and process maturity</p>
+      <div class="num">07 / 11</div>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">How the savings happen</p>
+      <h2>Ask once. Get a coordinated answer.</h2>
+      <div class="grid-2">
+        <div>
+          <div class="row"><span>01 · Intake</span><strong>Plain-language question</strong></div>
+          <div class="row"><span>02 · Route</span><strong>Right agents activated</strong></div>
+          <div class="row"><span>03 · Investigate</span><strong>Shared memory + tools</strong></div>
+          <div class="row"><span>04 · Synthesize</span><strong>Atlas packages the decision</strong></div>
+          <div class="row"><span>05 · Act</span><strong>Humans approve next steps</strong></div>
+        </div>
+        <div class="card" style="display:flex;flex-direction:column;justify-content:center">
+          <div class="metric">&lt; 90s</div>
+          <div class="label">target time to first multi-agent briefing</div>
+          <div style="margin-top:22px" class="metric">4–6</div>
+          <div class="label">agents typically involved in a cross-functional query</div>
+        </div>
+      </div>
+      <div class="num">08 / 11</div>
+    </section>
+
+    <section class="slide dark">
+      <p class="kicker">Compared to the alternative</p>
+      <h2>NOVA vs hiring your way out.</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="metric">$85k</div>
+          <div class="label">one junior analyst / year — still needs coordination</div>
+          <div class="bar"><i style="width:100%"></i></div>
+        </div>
+        <div class="card">
+          <div class="metric">~$16k</div>
+          <div class="label">time recovery alone from NOVA — before cash &amp; revenue wins</div>
+          <div class="bar"><i style="width:19%"></i></div>
+        </div>
+      </div>
+      <div class="grid-3" style="margin-top:16px">
+        <div class="card"><div class="metric">5×</div><div class="label">cheaper path than adding analyst capacity for reporting</div></div>
+        <div class="card"><div class="metric">weeks</div><div class="label">to value — not a 3–6 month hiring cycle</div></div>
+        <div class="card"><div class="metric">100%</div><div class="label">of approvals stay with your people</div></div>
+      </div>
+      <div class="num">09 / 11</div>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">Who it’s for</p>
+      <h2>Small tables to large floors.</h2>
+      <div class="grid-3">
+        <div class="card">
+          <div class="metric" style="font-size:28px;color:var(--ink)">Small</div>
+          <div class="label"><strong>Owner-operators</strong><br />A full team’s clarity without adding headcount. Biggest win: hours + fewer surprises.</div>
+        </div>
+        <div class="card">
+          <div class="metric" style="font-size:28px;color:var(--ink)">Growing</div>
+          <div class="label"><strong>Multi-team companies</strong><br />Shared context across finance, sales, and ops. Biggest win: handoff tax removed.</div>
+        </div>
+        <div class="card">
+          <div class="metric" style="font-size:28px;color:var(--ink)">Large</div>
+          <div class="label"><strong>Multi-site orgs</strong><br />Exception layer on existing systems. Biggest win: earlier risk detection.</div>
+        </div>
+      </div>
+      <div class="num">10 / 11</div>
+    </section>
+
+    <section class="slide dark">
+      <div class="hero-fill">
+        <p class="kicker">The close</p>
+        <h1 style="font-size:clamp(34px,4.2vw,54px)">Stop paying the coordination tax.</h1>
+        <div class="grid-3" style="margin-top:36px">
+          <div><div class="metric">~$16k+</div><div class="label">time recoverable / year</div></div>
+          <div><div class="metric">~$78k</div><div class="label">analyst hire avoided</div></div>
+          <div><div class="metric">7 days</div><div class="label">faster cash cycle target</div></div>
+        </div>
+        <p class="lede" style="margin-top:28px">NOVA · AI business team · savings you can measure</p>
+      </div>
+      <div class="num">11 / 11</div>
+    </section>
+  </div>
+</body>
+</html>
