@@ -1,17 +1,17 @@
-# NOVA pitch materials
+# NOVA investor pitch materials
 
-Savings-focused materials (no pricing).
+**GitHub:** https://github.com/smuffyy/nova/tree/main/pitch-materials
 
-| File | Format |
+| File | What |
 | --- | --- |
-| `NOVA-One-Pager.pdf` | One-pager PDF |
-| `NOVA-Pitch-Deck.pdf` | Pitch deck PDF |
-| `NOVA-Pitch-Deck.pptx` | Pitch deck PowerPoint |
-| `one-pager.html` / `pitch-deck.html` | Editable sources |
+| `NOVA-Pitch-Deck.pptx` | Investor PowerPoint (why it’s epic to buy) |
+| `NOVA-Pitch-Deck.pdf` | Same deck as PDF |
+| `NOVA-One-Pager.pdf` | One-page leave-behind |
+| `pitch-deck.html` / `one-pager.html` | Editable sources |
 
-## Key savings numbers
+## Headline numbers
 
-- **~$16k/yr** time recovered  
-- **~$78k/yr** analyst hire avoided  
-- **7 days** faster cash cycle (illustrative DSO)  
-- **$12k–$400k+** annual save range by company size  
+- **$47B / $28B / 33%** — SMB software, AI TAM, agentic CAGR  
+- **~$16k / ~$78k / 12×** — time saved, hire avoided, first-month savings  
+- **$12k–$400k+** — annual save by company size  
+- **$4.8M ARR / $2.5M seed** — 18-month plan + ask  

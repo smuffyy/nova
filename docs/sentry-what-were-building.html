@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Sentry — What We’re Building</title>
+  <style>
+    @page {
+      size: Letter;
+      margin: 0.7in 0.75in;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      color: #1a1a1a;
+      background: #fff;
+      font-family: Georgia, "Times New Roman", Times, serif;
+      font-size: 11.5pt;
+      line-height: 1.55;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      page-break-after: always;
+      break-after: page;
+      min-height: 9.2in;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+      break-after: auto;
+    }
+
+    h1 {
+      margin: 0 0 0.25rem;
+      font-size: 22pt;
+      font-weight: 700;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .subtitle {
+      margin: 0 0 1.25rem;
+      color: #555;
+      font-size: 11pt;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    h2 {
+      margin: 1.35rem 0 0.45rem;
+      font-size: 13pt;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-weight: 700;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 0.25rem;
+    }
+
+    h3 {
+      margin: 0.9rem 0 0.3rem;
+      font-size: 11.5pt;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-weight: 700;
+    }
+
+    p { margin: 0 0 0.7rem; }
+
+    ul {
+      margin: 0 0 0.8rem;
+      padding-left: 1.25rem;
+    }
+
+    li { margin-bottom: 0.3rem; }
+
+    .note {
+      margin: 0.8rem 0;
+      padding: 0.65rem 0.8rem;
+      background: #f5f5f5;
+      border-left: 3px solid #444;
+      font-size: 10.5pt;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10.5pt;
+      margin: 0.4rem 0 0.8rem;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 0.4rem 0.5rem;
+      border: 1px solid #ccc;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f0f0f0;
+      font-weight: 650;
+      font-size: 9.5pt;
+    }
+
+    .flow {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0.5rem 0 0.25rem;
+      border: 1px solid #ddd;
+      background: #fafafa;
+    }
+
+    .caption {
+      margin: 0 0 1rem;
+      font-size: 9.5pt;
+      color: #666;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      text-align: center;
+    }
+
+    .footer {
+      margin-top: 1.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid #ddd;
+      font-size: 9.5pt;
+      color: #666;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    .mono {
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      font-size: 10pt;
+    }
+
+    strong.term {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1: INTRO -->
+  <section class="page">
+    <h1>Sentry — What We’re Building</h1>
+    <p class="subtitle">A short brief for partners · September 2026</p>
+
+    <h2>1. Introduction</h2>
+    <p>
+      Sentry is a private company knowledge assistant. Think of it as a watcher over
+      how your company actually works — policies, standards, past decisions — so people
+      can <strong>ask the company</strong> instead of hunting through Slack, drives, or
+      someone’s memory.
+    </p>
+    <p>
+      Generic AI tools are helpful, but they invent facts. Spreadsheets and wikis go stale.
+      Sentry is built around a simple rule: <strong>cite what you know, or say you don’t know.</strong>
+    </p>
+
+    <h2>2. The problem we solve</h2>
+    <ul>
+      <li>Company knowledge lives in people’s heads and old chat threads.</li>
+      <li>Every new project restarts the same explanations.</li>
+      <li>New hires relearn “how we do things here.”</li>
+      <li>Related projects share a lot (N) and differ a little (K) — but teams re-brief everything anyway.</li>
+    </ul>
+
+    <h2>3. What Sentry does</h2>
+    <p>Sentry gives your team a few connected surfaces on one grounded memory:</p>
+    <ul>
+      <li><strong class="term">Chat</strong> — ask questions grounded in your uploaded documents.</li>
+      <li><strong class="term">Library / Dojo</strong> — train the company brain with policies, SOPs, exports.</li>
+      <li><strong class="term">Agents</strong> — named helpers (@Moony, @Ledger, @Quill…) that propose work inside your standards. People still approve.</li>
+      <li><strong class="term">Desktop home</strong> — a simple day view: chats, meetings, what needs you.</li>
+      <li><strong class="term">Asks</strong> — collaborative work items with shared ownership.</li>
+      <li><strong class="term">Knowledge pills</strong> — distill one chat into a reusable capsule for the next project.</li>
+    </ul>
+
+    <h2>4. Knowledge pills (the key idea)</h2>
+    <p>
+      When two projects are mostly the same, you shouldn’t start from zero.
+    </p>
+    <div class="note">
+      <strong>N</strong> = what they share (goals, stack, decisions, constraints)<br />
+      <strong>K</strong> = what’s different this time<br />
+      <strong>Pill</strong> = a compressed version of N you can attach to a new chat
+    </div>
+    <p>
+      <strong>Example:</strong> Project A and Project B share onboarding flow, tech stack,
+      and compliance rules (N). B only changes pricing and region (K).
+      Make a pill from A, attach it to B’s chat, then only explain K.
+    </p>
+    <ol>
+      <li>Open a chat that already has history → <strong>Make pill</strong></li>
+      <li>Open the new project chat → <strong>Attach pill</strong></li>
+      <li>Ask questions — answers take the pill into account</li>
+    </ol>
+
+    <h2>5. Who it’s for</h2>
+    <p>
+      Teams of about 5–50 people (agencies, professional services, light ops) where
+      “how we work” still lives in a few people’s heads — and similar projects keep
+      burning the same ramp-up time.
+    </p>
+
+    <h2>6. Trust rules</h2>
+    <ol>
+      <li><strong>Cite or refuse</strong> — no invented company facts.</li>
+      <li><strong>Chat is shared; Sidekick is personal</strong> — clear walls.</li>
+      <li><strong>Agents propose; people approve</strong> — no silent write-backs.</li>
+      <li><strong>Workspace isolation</strong> — every query stays in its tenant.</li>
+    </ol>
+
+    <h2>7. What you can try today</h2>
+    <table>
+      <thead>
+        <tr><th>Surface</th><th>What it does</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Chat</td><td>Grounded Q&amp;A with citations</td></tr>
+        <tr><td>Pills</td><td>Compress one chat → reuse in another</td></tr>
+        <tr><td>Library / Dojo</td><td>Upload and train company or personal knowledge</td></tr>
+        <tr><td>Agents</td><td>@-mention specialists that propose next steps</td></tr>
+        <tr><td>Asks</td><td>Collaborate on shared work items</td></tr>
+        <tr><td>Desktop</td><td>Home, chat, meetings, updates</td></tr>
+      </tbody>
+    </table>
+
+    <p>
+      Demo login: <span class="mono">demo@portal.local</span> /
+      <span class="mono">portal-demo</span>
+    </p>
+
+    <p class="footer">
+      Bottom line: Sentry makes the company knowable — and lets the next project inherit the last one.
+    </p>
+  </section>
+
+  <!-- PAGE 2: FLOWCHARTS -->
+  <section class="page">
+    <h1>How it works</h1>
+    <p class="subtitle">Simple flows — same ideas as page 1, in pictures</p>
+
+    <h2>A. System overview</h2>
+    <p>
+      Documents go into the company brain. People ask through Chat, Agents, or Desktop.
+      Pills carry project context from one chat to another.
+    </p>
+
+    <svg class="flow" viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" aria-label="System overview flowchart">
+      <!-- boxes -->
+      <rect x="20" y="70" width="110" height="60" rx="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
+      <text x="75" y="95" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" font-weight="700">Library</text>
+      <text x="75" y="113" text-anchor="middle" font-size="10" font-family="Helvetica, Arial, sans-serif" fill="#555">docs / SOPs</text>
+
+      <path d="M130 100 H160" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+
+      <rect x="160" y="60" width="120" height="80" rx="6" fill="#333"/>
+      <text x="220" y="95" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" font-weight="700" fill="#fff">Company brain</text>
+      <text x="220" y="114" text-anchor="middle" font-size="10" font-family="Helvetica, Arial, sans-serif" fill="#ccc">cite or refuse</text>
+
+      <path d="M280 100 H310" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+
+      <rect x="310" y="20" width="100" height="40" rx="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
+      <text x="360" y="45" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" font-weight="700">Chat</text>
+
+      <rect x="310" y="80" width="100" height="40" rx="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
+      <text x="360" y="105" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" font-weight="700">Agents</text>
+
+      <rect x="310" y="140" width="100" height="40" rx="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
+      <text x="360" y="165" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" font-weight="700">Desktop</text>
+
+      <path d="M280 80 L310 40" stroke="#333" stroke-width="1.2"/>
+      <path d="M280 120 L310 160" stroke="#333" stroke-width="1.2"/>
+
+      <path d="M410 100 H440" stroke="#333" stroke-width="1.5" marker-end="url(#a)"/>
+
+      <rect x="440" y="40" width="120" height="50" rx="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
+      <text x="500" y="62" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" font-weight="700">Sidekick</text>
+      <text x="500" y="78" text-anchor="middle" font-size="10" font-family="Helvetica, Arial, sans-serif" fill="#555">personal only</text>
+
+      <rect x="440" y="110" width="120" height="50" rx="6" fill="#fff" stroke="#333" stroke-width="2"/>
+      <text x="500" y="132" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" font-weight="700">Pills</text>
+      <text x="500" y="148" text-anchor="middle" font-size="10" font-family="Helvetica, Arial, sans-serif" fill="#555">shared project prior</text>
+
+      <path d="M410 40 H440" stroke="#333" stroke-width="1.2"/>
+      <path d="M410 160 H440" stroke="#333" stroke-width="1.2"/>
+
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="#333"/>
+        </marker>
+      </defs>
+    </svg>
+    <p class="caption">Figure 1 — Documents feed the brain; people use Chat / Agents / Desktop; pills reuse project context</p>
+
+    <h2>B. Knowledge pill flow</h2>
+    <p>
+      Take what you already figured out in one chat, compress it, and reuse it
+      so the next chat only needs the differences.
+    </p>
+
+    <svg class="flow" viewBox="0 0 680 130" xmlns="http://www.w3.org/2000/svg" aria-label="Pill flow">
+      <defs>
+        <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="#333"/>
+        </marker>
+      </defs>
+
+      <rect x="15" y="35" width="140" height="60" rx="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
+      <text x="85" y="60" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" font-weight="700">1. Chat A</text>
+      <text x="85" y="78" text-anchor="middle" font-size="10" font-family="Helvetica, Arial, sans-serif" fill="#555">existing history</text>
+
+      <path d="M155 65 H185" stroke="#333" stroke-width="1.5" marker-end="url(#b)"/>
+
+      <rect x="185" y="35" width="140" height="60" rx="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
+      <text x="255" y="60" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" font-weight="700">2. Make pill</text>
+      <text x="255" y="78" text-anchor="middle" font-size="10" font-family="Helvetica, Arial, sans-serif" fill="#555">compress → N</text>
+
+      <path d="M325 65 H355" stroke="#333" stroke-width="1.5" marker-end="url(#b)"/>
+
+      <rect x="355" y="35" width="140" height="60" rx="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
+      <text x="425" y="60" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" font-weight="700">3. Attach</text>
+      <text x="425" y="78" text-anchor="middle" font-size="10" font-family="Helvetica, Arial, sans-serif" fill="#555">to Chat B</text>
+
+      <path d="M495 65 H525" stroke="#333" stroke-width="1.5" marker-end="url(#b)"/>
+
+      <rect x="525" y="35" width="140" height="60" rx="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
+      <text x="595" y="60" text-anchor="middle" font-size="12" font-family="Helvetica, Arial, sans-serif" font-weight="700">4. Ask only K</text>
+      <text x="595" y="78" text-anchor="middle" font-size="10" font-family="Helvetica, Arial, sans-serif" fill="#555">what’s new</text>
+    </svg>
+    <p class="caption">Figure 2 — Make pill from Chat A → attach to Chat B → brief only the delta (K)</p>
+
+    <h2>C. How an answer is built</h2>
+    <p>
+      When you ask a question, Sentry uses any attached pills, looks up library evidence,
+      and either answers with sources or refuses if it doesn’t know.
+    </p>
+
+    <svg class="flow" viewBox="0 0 680 110" xmlns="http://www.w3.org/2000/svg" aria-label="Answer path">
+      <defs>
+        <marker id="c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="#333"/>
+        </marker>
+      </defs>
+
+      <rect x="10" y="30" width="100" height="50" rx="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
+      <text x="60" y="60" text-anchor="middle" font-size="11" font-family="Helvetica, Arial, sans-serif" font-weight="700">Question</text>
+
+      <path d="M110 55 H135" stroke="#333" stroke-width="1.5" marker-end="url(#c)"/>
+
+      <rect x="135" y="30" width="100" height="50" rx="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
+      <text x="185" y="52" text-anchor="middle" font-size="11" font-family="Helvetica, Arial, sans-serif" font-weight="700">+ Pills</text>
+      <text x="185" y="68" text-anchor="middle" font-size="9" font-family="Helvetica, Arial, sans-serif" fill="#555">if attached</text>
+
+      <path d="M235 55 H260" stroke="#333" stroke-width="1.5" marker-end="url(#c)"/>
+
+      <rect x="260" y="30" width="100" height="50" rx="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
+      <text x="310" y="52" text-anchor="middle" font-size="11" font-family="Helvetica, Arial, sans-serif" font-weight="700">Retrieve</text>
+      <text x="310" y="68" text-anchor="middle" font-size="9" font-family="Helvetica, Arial, sans-serif" fill="#555">from library</text>
+
+      <path d="M360 55 H385" stroke="#333" stroke-width="1.5" marker-end="url(#c)"/>
+
+      <rect x="385" y="30" width="100" height="50" rx="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
+      <text x="435" y="52" text-anchor="middle" font-size="11" font-family="Helvetica, Arial, sans-serif" font-weight="700">Check</text>
+      <text x="435" y="68" text-anchor="middle" font-size="9" font-family="Helvetica, Arial, sans-serif" fill="#555">enough proof?</text>
+
+      <path d="M485 55 H510" stroke="#333" stroke-width="1.5" marker-end="url(#c)"/>
+
+      <rect x="510" y="20" width="155" height="70" rx="6" fill="#fff" stroke="#333" stroke-width="1.5"/>
+      <text x="587" y="48" text-anchor="middle" font-size="11" font-family="Helvetica, Arial, sans-serif" font-weight="700">Answer or refuse</text>
+      <text x="587" y="66" text-anchor="middle" font-size="9" font-family="Helvetica, Arial, sans-serif" fill="#555">cite sources · use pills</text>
+    </svg>
+    <p class="caption">Figure 3 — Question → pills + library → answer with citations, or refuse</p>
+
+    <div class="note">
+      <strong>Remember:</strong> N + K → ready chat.
+      The pill holds N. You only teach K. The model doesn’t need the whole old transcript again.
+    </div>
+
+    <p class="footer">
+      Sentry · What we’re building · Page 2 (flows)
+    </p>
+  </section>
+
+</body>
+</html>

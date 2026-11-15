@@ -1,0 +1,371 @@
+import type { KnowledgePill } from "@/lib/db";
+import { db } from "@/lib/db";
+import { topicFromQuestion } from "@/lib/chatSummary";
+
+export type PillDetail = {
+  goals: string[];
+  stack: string[];
+  decisions: string[];
+  assumptions: string[];
+  openQuestions: string[];
+  glossary: string[];
+};
+
+export type PillDraft = {
+  title: string;
+  body: string;
+  bullets: string[];
+  detail: PillDetail;
+  exportMd: string;
+};
+
+const EMPTY_DETAIL: PillDetail = {
+  goals: [],
+  stack: [],
+  decisions: [],
+  assumptions: [],
+  openQuestions: [],
+  glossary: [],
+};
+
+function asStringList(value: unknown, max = 12): string[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((b): b is string => typeof b === "string")
+    .map((b) => b.trim())
+    .filter(Boolean)
+    .slice(0, max);
+}
+
+export function parsePillDetail(raw: string | null | undefined): PillDetail {
+  if (!raw) return { ...EMPTY_DETAIL };
+  try {
+    const parsed = JSON.parse(raw) as Partial<PillDetail>;
+    return {
+      goals: asStringList(parsed.goals),
+      stack: asStringList(parsed.stack),
+      decisions: asStringList(parsed.decisions),
+      assumptions: asStringList(parsed.assumptions),
+      openQuestions: asStringList(parsed.openQuestions),
+      glossary: asStringList(parsed.glossary, 16),
+    };
+  } catch {
+    return { ...EMPTY_DETAIL };
+  }
+}
+
+export function serializePill(pill: KnowledgePill) {
+  const detail = parsePillDetail(pill.detail_json);
+  const exportMd = pill.export_md || buildPortableMarkdown(pill, detail);
+  return {
+    id: pill.id,
+    title: pill.title,
+    body: pill.body,
+    bullets: pill.bullets,
+    detail,
+    exportMd,
+    sourceChatId: pill.source_chat_id,
+    createdAt: pill.created_at,
+    updatedAt: pill.updated_at,
+  };
+}
+
+/** Compact block for the LLM — shared prior context, not citable company docs. */
+export function formatPillsForPrompt(pills: KnowledgePill[]): string {
+  if (!pills.length) return "";
+  return pills
+    .map((p) => {
+      const detail = parsePillDetail(p.detail_json);
+      if (p.export_md?.trim()) {
+        return p.export_md.trim().slice(0, 6000);
+      }
+      return buildPortableMarkdown(p, detail).slice(0, 6000);
+    })
+    .join("\n\n---\n\n");
+}
+
+function section(title: string, items: string[]): string {
+  if (!items.length) return "";
+  return `## ${title}\n\n${items.map((i) => `- ${i}`).join("\n")}\n`;
+}
+
+/** Portable markdown — paste/upload into ChatGPT, Claude, Gemini, etc. */
+export function buildPortableMarkdown(
+  pill: Pick<KnowledgePill, "title" | "body" | "bullets"> & {
+    created_at?: string;
+  },
+  detail: PillDetail = EMPTY_DETAIL
+): string {
+  const exportedAt = (pill.created_at || new Date().toISOString()).slice(0, 10);
+  const parts = [
+    "---",
+    "format: sentry-knowledge-pill",
+    "version: 1",
+    `title: ${JSON.stringify(pill.title)}`,
+    `exported_at: ${exportedAt}`,
+    "---",
+    "",
+    `# Knowledge Pill: ${pill.title}`,
+    "",
+    "## How to use this file",
+    "",
+    "Paste or upload this document into ChatGPT, Claude, Gemini, Cursor, or any assistant as **prior context**.",
+    "",
+    "- Treat everything below as established shared knowledge (**N**).",
+    "- Do **not** re-ask for facts already listed here.",
+    "- Only ask about what is new or different for this project (**K** — the delta).",
+    "- If something conflicts with newer instructions from the user, prefer the newer instructions and note the conflict.",
+    "",
+    "## Summary",
+    "",
+    pill.body.trim() || "_No summary._",
+    "",
+  ];
+
+  const goals = detail.goals.length
+    ? detail.goals
+    : pill.bullets.filter((b) => /goal|aim|objective/i.test(b)).slice(0, 4);
+  const decisions =
+    detail.decisions.length > 0
+      ? detail.decisions
+      : pill.bullets.filter((b) => /decid|chose|went with|agreed/i.test(b));
+  const stack = detail.stack;
+  const assumptions = detail.assumptions;
+  const openQuestions = detail.openQuestions;
+  const glossary = detail.glossary;
+
+  parts.push(section("Goals", goals));
+  parts.push(section("Stack & constraints", stack));
+  parts.push(section("Decisions", decisions));
+  parts.push(section("Assumptions", assumptions));
+  parts.push(section("Open questions", openQuestions));
+  parts.push(section("Glossary / names", glossary));
+
+  const leftover = pill.bullets.filter(
+    (b) =>
+      !goals.includes(b) &&
+      !decisions.includes(b) &&
+      !stack.includes(b) &&
+      !assumptions.includes(b) &&
+      !openQuestions.includes(b) &&
+      !glossary.includes(b)
+  );
+  parts.push(section("Key facts", leftover));
+
+  parts.push("## Delta instructions");
+  parts.push("");
+  parts.push(
+    "When continuing related work, start from this pill as shared prior. Brief only the differences: new region, pricing, owners, deadlines, or constraints not listed above."
+  );
+  parts.push("");
+  parts.push("_Generated by Sentry Knowledge Pill · portable across AI chats_");
+  parts.push("");
+
+  return parts.filter((p, i, arr) => !(p === "" && arr[i - 1] === "")).join("\n");
+}
+
+function safeFilename(title: string) {
+  const base = title
+    .replace(/^Pill\s*[·\-–—]\s*/i, "")
+    .replace(/[^\w\s-]+/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .slice(0, 48);
+  return `${base || "knowledge-pill"}.pill.md`;
+}
+
+export function pillDownloadName(pill: Pick<KnowledgePill, "title">) {
+  return safeFilename(pill.title);
+}
+
+function transcriptForPill(chatId: string, maxChars = 14_000): string {
+  const messages = db.listMessages(chatId);
+  const lines: string[] = [];
+  let total = 0;
+  for (const m of messages) {
+    const line = `${m.role === "user" ? "User" : "Assistant"}: ${m.content
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 1200)}`;
+    if (total + line.length > maxChars && lines.length > 0) break;
+    lines.push(line);
+    total += line.length;
+  }
+  return lines.join("\n");
+}
+
+function heuristicPillFromChat(chatId: string): PillDraft {
+  const chat = db.getChat(chatId);
+  const messages = db.listMessages(chatId);
+  const userTurns = messages.filter((m) => m.role === "user");
+  const assistantTurns = messages.filter((m) => m.role === "assistant");
+
+  const titleBase =
+    topicFromQuestion(userTurns[0]?.content || "") ||
+    (chat?.title && chat.title !== "New chat" ? chat.title : null) ||
+    "Project context";
+
+  const bullets: string[] = [];
+  for (const m of userTurns.slice(0, 8)) {
+    const t = m.content.replace(/\s+/g, " ").trim();
+    if (t.length < 12) continue;
+    const clip = t.length > 180 ? `${t.slice(0, 179).trim()}…` : t;
+    bullets.push(clip);
+    if (bullets.length >= 8) break;
+  }
+  for (const m of assistantTurns.slice(0, 6)) {
+    const first = m.content
+      .split(/\n+/)
+      .map((l) => l.replace(/^[-*•]\s+/, "").trim())
+      .find((l) => l.length > 24);
+    if (!first) continue;
+    const clip = first.length > 180 ? `${first.slice(0, 179).trim()}…` : first;
+    if (!bullets.some((b) => b.includes(clip.slice(0, 40)))) {
+      bullets.push(clip);
+    }
+    if (bullets.length >= 12) break;
+  }
+
+  const detail: PillDetail = {
+    goals: userTurns[0]
+      ? [
+          `Primary thread: ${topicFromQuestion(userTurns[0].content) || titleBase}`,
+        ]
+      : [],
+    stack: [],
+    decisions: bullets.slice(0, 4),
+    assumptions: [],
+    openQuestions: userTurns
+      .slice(-2)
+      .map((m) => m.content.replace(/\s+/g, " ").trim().slice(0, 160))
+      .filter(Boolean),
+    glossary: [],
+  };
+
+  const body = [
+    `Shared prior context distilled from “${titleBase}”.`,
+    userTurns.length
+      ? `This chat covered ${userTurns.length} user turn${userTurns.length === 1 ? "" : "s"}. Treat the sections in the export as established similarities (N); only brief what is new (K) when starting a related project.`
+      : "Empty chat — enrich this pill before sharing elsewhere.",
+  ].join(" ");
+
+  const draft: PillDraft = {
+    title: `Pill · ${titleBase}`.slice(0, 72),
+    body,
+    bullets: bullets.slice(0, 12),
+    detail,
+    exportMd: "",
+  };
+  draft.exportMd = buildPortableMarkdown(
+    { title: draft.title, body: draft.body, bullets: draft.bullets },
+    detail
+  );
+  return draft;
+}
+
+async function llmPillFromTranscript(
+  titleHint: string,
+  transcript: string
+): Promise<PillDraft | null> {
+  const key = process.env.OPENAI_API_KEY;
+  if (!key || !transcript.trim()) return null;
+
+  const res = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${key}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: process.env.OPENAI_MODEL || "gpt-4o-mini",
+      temperature: 0.2,
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "system",
+          content: `You distill a chat into a detailed reusable "knowledge pill" — portable prior context so another AI chat (ChatGPT, Claude, Gemini, etc.) only needs the delta.
+Return JSON:
+{
+  "title": "short label",
+  "body": "2-4 sentence narrative of shared goals, stack, constraints, and decisions",
+  "bullets": ["scannable fact", "..."],
+  "goals": ["..."],
+  "stack": ["tech, vendors, constraints..."],
+  "decisions": ["what was decided..."],
+  "assumptions": ["..."],
+  "openQuestions": ["still unresolved..."],
+  "glossary": ["Name — meaning"]
+}
+Rules:
+- Capture similarities (N) richly enough that another model can continue without the transcript.
+- Omit small talk and one-off Q&A fluff.
+- Do not invent facts not in the transcript.
+- title ≤ 60 chars; body ≤ 900 chars; 6–14 bullets; fill every list you can from evidence (empty arrays ok).`,
+        },
+        {
+          role: "user",
+          content: `Chat title hint: ${titleHint}\n\nTranscript:\n${transcript}`,
+        },
+      ],
+    }),
+  });
+
+  if (!res.ok) {
+    console.error("pill LLM error", await res.text());
+    return null;
+  }
+
+  const data = (await res.json()) as {
+    choices?: { message?: { content?: string } }[];
+  };
+  const raw = data.choices?.[0]?.message?.content?.trim();
+  if (!raw) return null;
+
+  try {
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    const title =
+      typeof parsed.title === "string" && parsed.title.trim()
+        ? parsed.title.trim().slice(0, 72)
+        : null;
+    const body =
+      typeof parsed.body === "string" && parsed.body.trim()
+        ? parsed.body.trim().slice(0, 1200)
+        : null;
+    const bullets = asStringList(parsed.bullets, 14);
+    if (!title || !body) return null;
+    const detail: PillDetail = {
+      goals: asStringList(parsed.goals),
+      stack: asStringList(parsed.stack),
+      decisions: asStringList(parsed.decisions),
+      assumptions: asStringList(parsed.assumptions),
+      openQuestions: asStringList(parsed.openQuestions),
+      glossary: asStringList(parsed.glossary, 16),
+    };
+    const draft: PillDraft = {
+      title,
+      body,
+      bullets,
+      detail,
+      exportMd: "",
+    };
+    draft.exportMd = buildPortableMarkdown(
+      { title, body, bullets },
+      detail
+    );
+    return draft;
+  } catch {
+    return null;
+  }
+}
+
+/** Generate a knowledge pill from an existing chat (LLM with heuristic fallback). */
+export async function generatePillFromChat(chatId: string): Promise<PillDraft> {
+  const chat = db.getChat(chatId);
+  const fallback = heuristicPillFromChat(chatId);
+  const transcript = transcriptForPill(chatId);
+  const llm = await llmPillFromTranscript(
+    chat?.title || fallback.title,
+    transcript
+  );
+  return llm || fallback;
+}
