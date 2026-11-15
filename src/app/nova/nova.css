@@ -1,0 +1,1171 @@
+/* NOVA design system — Apple-calm, premium, restrained */
+
+.nova-app {
+  /* Light */
+  --n-bg: #f5f5f7;
+  --n-surface: #ffffff;
+  --n-surface-2: #fbfbfd;
+  --n-elevated: #ffffff;
+  --n-ink: #1d1d1f;
+  --n-muted: #6e6e73;
+  --n-tertiary: #86868b;
+  --n-divider: rgba(0, 0, 0, 0.08);
+  --n-border: rgba(0, 0, 0, 0.06);
+  --n-accent: #0071e3;
+  --n-accent-2: #5856d6;
+  --n-accent-soft: rgba(0, 113, 227, 0.1);
+  --n-success: #34c759;
+  --n-warning: #ff9f0a;
+  --n-critical: #ff3b30;
+  --n-info: #007aff;
+  --n-fill: rgba(0, 0, 0, 0.04);
+  --n-fill-hover: rgba(0, 0, 0, 0.06);
+  --n-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --n-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  --n-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.1);
+  --n-radius-sm: 8px;
+  --n-radius: 12px;
+  --n-radius-lg: 16px;
+  --n-radius-xl: 20px;
+  --n-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --n-fast: 180ms;
+  --n-sidebar: 252px;
+  --n-sidebar-collapsed: 68px;
+  --n-font: var(--font-nova), "Inter", -apple-system, BlinkMacSystemFont,
+    "SF Pro Text", "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+
+  min-height: 100vh;
+  height: 100%;
+  background: var(--n-bg);
+  color: var(--n-ink);
+  font-family: var(--n-font);
+  font-size: 15px;
+  line-height: 1.47;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.nova-app[data-theme="dark"] {
+  --n-bg: #000000;
+  --n-surface: #1c1c1e;
+  --n-surface-2: #2c2c2e;
+  --n-elevated: #2c2c2e;
+  --n-ink: #f5f5f7;
+  --n-muted: #98989d;
+  --n-tertiary: #6e6e73;
+  --n-divider: rgba(255, 255, 255, 0.1);
+  --n-border: rgba(255, 255, 255, 0.08);
+  --n-accent: #0a84ff;
+  --n-accent-2: #5e5ce6;
+  --n-accent-soft: rgba(10, 132, 255, 0.16);
+  --n-fill: rgba(255, 255, 255, 0.06);
+  --n-fill-hover: rgba(255, 255, 255, 0.1);
+  --n-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --n-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  --n-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.55);
+}
+
+.nova-app *,
+.nova-app *::before,
+.nova-app *::after {
+  box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nova-app *,
+  .nova-app *::before,
+  .nova-app *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* —— Type —— */
+.n-title {
+  margin: 0;
+  font-size: clamp(1.85rem, 3vw, 2.15rem);
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.15;
+  color: var(--n-ink);
+}
+
+.n-hero {
+  margin: 0;
+  font-size: clamp(2.2rem, 4vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  color: var(--n-ink);
+}
+
+.n-h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--n-ink);
+}
+
+.n-h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--n-ink);
+}
+
+.n-body {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--n-ink);
+  line-height: 1.5;
+}
+
+.n-secondary {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--n-muted);
+  line-height: 1.45;
+}
+
+.n-meta {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--n-tertiary);
+  letter-spacing: 0.01em;
+}
+
+.n-label {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--n-tertiary);
+}
+
+/* —— Layout —— */
+.nova-shell {
+  display: grid;
+  grid-template-columns: var(--n-sidebar) minmax(0, 1fr);
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  transition: grid-template-columns var(--n-fast) var(--n-ease);
+}
+
+.nova-shell.is-collapsed {
+  grid-template-columns: var(--n-sidebar-collapsed) minmax(0, 1fr);
+}
+
+.nova-shell.is-chat-context {
+  grid-template-columns: var(--n-sidebar) minmax(0, 1fr) 272px;
+}
+
+.nova-shell.is-collapsed.is-chat-context {
+  grid-template-columns: var(--n-sidebar-collapsed) minmax(0, 1fr) 272px;
+}
+
+.nova-main {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--n-bg);
+}
+
+.nova-main__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.nova-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+}
+
+.nova-page--wide {
+  max-width: 960px;
+}
+
+.nova-page--chat {
+  max-width: none;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* —— Sidebar —— */
+.nova-sidebar {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 12px 16px;
+  background: var(--n-surface-2);
+  border-right: 1px solid var(--n-divider);
+  overflow: auto;
+  transition: width var(--n-fast) var(--n-ease);
+}
+
+.nova-desktop-drag {
+  display: none;
+}
+
+.nova-sidebar__brand-row {
+  display: flex;
+  align-items: flex-start;
+}
+
+.nova-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px 20px;
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Electron desktop chrome — drag region + traffic-light clearance */
+.nova-app.is-desktop .nova-sidebar {
+  padding-top: 36px;
+}
+
+.nova-app.is-desktop .nova-desktop-drag {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 36px;
+  z-index: 50;
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+
+.nova-app.is-desktop .nova-sidebar__brand-row,
+.nova-app.is-desktop .nova-brand,
+.nova-app.is-desktop .nova-collapse,
+.nova-app.is-desktop .nova-nav__link,
+.nova-app.is-desktop .nova-agent-link,
+.nova-app.is-desktop .nova-side-foot,
+.nova-app.is-desktop .nova-main,
+.nova-app.is-desktop button,
+.nova-app.is-desktop a,
+.nova-app.is-desktop input,
+.nova-app.is-desktop textarea {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+
+.nova-app.is-desktop .nova-main {
+  padding-top: 8px;
+}
+
+.nova-brand__mark {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--n-radius-sm);
+  background: var(--n-ink);
+  color: var(--n-bg);
+  display: grid;
+  place-items: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.nova-app[data-theme="dark"] .nova-brand__mark {
+  background: var(--n-ink);
+  color: #000;
+}
+
+.nova-brand__name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.nova-collapse {
+  border: 0;
+  background: transparent;
+  color: var(--n-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--n-radius-sm);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background var(--n-fast) var(--n-ease), color var(--n-fast) var(--n-ease);
+}
+
+.nova-collapse:hover {
+  background: var(--n-fill);
+  color: var(--n-ink);
+}
+
+.nova-nav {
+  display: grid;
+  gap: 2px;
+}
+
+.nova-nav__link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: var(--n-muted);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  transition: background var(--n-fast) var(--n-ease), color var(--n-fast) var(--n-ease);
+}
+
+.nova-nav__link:hover {
+  background: var(--n-fill);
+  color: var(--n-ink);
+}
+
+.nova-nav__link.is-active {
+  background: var(--n-accent-soft);
+  color: var(--n-accent);
+}
+
+.nova-nav__link:focus-visible,
+.nova-collapse:focus-visible,
+.n-btn:focus-visible,
+.nova-cmd__item:focus-visible {
+  outline: 2px solid var(--n-accent);
+  outline-offset: 2px;
+}
+
+.nova-side-section {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--n-divider);
+}
+
+.nova-side-section__title {
+  padding: 0 10px 8px;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--n-tertiary);
+  font-weight: 600;
+}
+
+.nova-agent-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  transition: background var(--n-fast) var(--n-ease);
+}
+
+.nova-agent-link:hover {
+  background: var(--n-fill);
+}
+
+.nova-agent-glyph {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--n-fill);
+  color: var(--n-muted);
+  display: grid;
+  place-items: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.nova-agent-link__name {
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--n-ink);
+}
+
+.nova-agent-link__meta {
+  font-size: 0.7rem;
+  color: var(--n-tertiary);
+  text-transform: capitalize;
+}
+
+.nova-side-foot {
+  margin-top: auto;
+  padding: 16px 10px 4px;
+  border-top: 1px solid var(--n-divider);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nova-user__avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--n-fill);
+  color: var(--n-ink);
+  display: grid;
+  place-items: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.nova-user__name {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.nova-user__biz {
+  font-size: 0.72rem;
+  color: var(--n-muted);
+}
+
+.nova-shell.is-collapsed .nova-brand__name,
+.nova-shell.is-collapsed .nova-nav__label,
+.nova-shell.is-collapsed .nova-side-section__title,
+.nova-shell.is-collapsed .nova-agent-link__meta,
+.nova-shell.is-collapsed .nova-agent-link__name,
+.nova-shell.is-collapsed .nova-user__meta,
+.nova-shell.is-collapsed .nova-side-foot__plan,
+.nova-shell.is-collapsed .nova-cmd-hint {
+  display: none;
+}
+
+.nova-shell.is-collapsed .nova-nav__link,
+.nova-shell.is-collapsed .nova-agent-link {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.nova-shell.is-collapsed .nova-side-foot {
+  justify-content: center;
+}
+
+/* —— Status —— */
+.nova-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: var(--n-muted);
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.nova-status__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--n-tertiary);
+}
+
+.nova-status.is-available .nova-status__dot {
+  background: var(--n-success);
+}
+.nova-status.is-working .nova-status__dot,
+.nova-status.is-thinking .nova-status__dot {
+  background: var(--n-info);
+  animation: n-pulse 1.4s var(--n-ease) infinite;
+}
+.nova-status.is-needs_approval .nova-status__dot {
+  background: var(--n-warning);
+}
+.nova-status.is-waiting .nova-status__dot {
+  background: var(--n-tertiary);
+}
+.nova-status.is-completed .nova-status__dot {
+  background: var(--n-success);
+}
+.nova-status.is-error .nova-status__dot {
+  background: var(--n-critical);
+}
+
+@keyframes n-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* —— Buttons —— */
+.n-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: var(--n-fill);
+  color: var(--n-ink);
+  text-decoration: none;
+  transition: background var(--n-fast) var(--n-ease), color var(--n-fast) var(--n-ease),
+    border-color var(--n-fast) var(--n-ease), transform var(--n-fast) var(--n-ease);
+}
+
+.n-btn:hover {
+  background: var(--n-fill-hover);
+}
+
+.n-btn:active {
+  transform: scale(0.98);
+}
+
+.n-btn--primary {
+  background: var(--n-accent);
+  color: #fff;
+  border-color: var(--n-accent);
+}
+
+.n-btn--primary:hover {
+  filter: brightness(1.05);
+  background: var(--n-accent);
+}
+
+.n-btn--ghost {
+  background: transparent;
+  color: var(--n-accent);
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.n-btn--ghost:hover {
+  background: transparent;
+  text-decoration: underline;
+}
+
+.n-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* —— Surfaces —— */
+.n-card {
+  background: var(--n-surface);
+  border: 1px solid var(--n-border);
+  border-radius: var(--n-radius-lg);
+  padding: 20px;
+  box-shadow: var(--n-shadow-sm);
+}
+
+.n-feed {
+  display: grid;
+  gap: 0;
+}
+
+.n-feed__item {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--n-divider);
+}
+
+.n-feed__item:first-child {
+  padding-top: 8px;
+}
+
+.n-feed__item:last-child {
+  border-bottom: 0;
+}
+
+.n-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--n-accent-soft);
+  color: var(--n-accent);
+  font-size: 0.82rem;
+  font-weight: 560;
+}
+
+.n-sev {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--n-muted);
+}
+
+.n-sev__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--n-tertiary);
+}
+
+.n-sev.is-critical {
+  color: var(--n-critical);
+}
+.n-sev.is-critical .n-sev__dot {
+  background: var(--n-critical);
+}
+.n-sev.is-high {
+  color: var(--n-warning);
+}
+.n-sev.is-high .n-sev__dot {
+  background: var(--n-warning);
+}
+.n-sev.is-medium {
+  color: var(--n-info);
+}
+.n-sev.is-medium .n-sev__dot {
+  background: var(--n-info);
+}
+
+.n-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 20px 0 8px;
+}
+
+.n-stat {
+  font-size: 0.84rem;
+  color: var(--n-muted);
+}
+
+.n-stat strong {
+  color: var(--n-ink);
+  font-weight: 600;
+}
+
+/* —— Context —— */
+.nova-context {
+  border-left: 1px solid var(--n-divider);
+  background: var(--n-surface);
+  padding: 24px 18px;
+  overflow: auto;
+}
+
+.nova-context__block {
+  margin-bottom: 28px;
+}
+
+.nova-context__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  font-size: 0.84rem;
+}
+
+/* —— Command palette —— */
+.nova-cmd {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: start center;
+  padding-top: 14vh;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: n-fade var(--n-fast) var(--n-ease);
+}
+
+@keyframes n-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.nova-cmd__panel {
+  width: min(560px, 92vw);
+  background: var(--n-elevated);
+  border-radius: var(--n-radius-xl);
+  border: 1px solid var(--n-border);
+  box-shadow: var(--n-shadow-lg);
+  overflow: hidden;
+  animation: n-rise 220ms var(--n-ease);
+}
+
+@keyframes n-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.nova-cmd__input {
+  width: 100%;
+  border: 0;
+  outline: none;
+  padding: 18px 20px;
+  font: inherit;
+  font-size: 1.05rem;
+  border-bottom: 1px solid var(--n-divider);
+  background: transparent;
+  color: var(--n-ink);
+}
+
+.nova-cmd__list {
+  max-height: 320px;
+  overflow: auto;
+  padding: 8px;
+}
+
+.nova-cmd__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  padding: 12px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--n-ink);
+  transition: background var(--n-fast) var(--n-ease);
+}
+
+.nova-cmd__item:hover,
+.nova-cmd__item.is-active {
+  background: var(--n-fill);
+}
+
+.nova-cmd__hint,
+.nova-cmd-hint {
+  font-size: 0.72rem;
+  color: var(--n-tertiary);
+}
+
+/* —— Chat —— */
+.nova-chat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 28px;
+  border-bottom: 1px solid var(--n-divider);
+  background: color-mix(in srgb, var(--n-surface) 85%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.nova-chat-stream {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 28px 28px 20px;
+}
+
+.nova-chat-stream__inner {
+  max-width: 680px;
+  margin: 0 auto;
+  display: grid;
+  gap: 28px;
+}
+
+.nova-msg--user {
+  justify-self: end;
+  max-width: min(100%, 520px);
+  padding: 12px 16px;
+  border-radius: 18px 18px 6px 18px;
+  background: var(--n-ink);
+  color: var(--n-bg);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.nova-app[data-theme="dark"] .nova-msg--user {
+  background: #3a3a3c;
+  color: var(--n-ink);
+}
+
+.nova-msg--ai {
+  max-width: min(100%, 640px);
+}
+
+.nova-msg__agent {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--n-muted);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.nova-msg__text {
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--n-ink);
+}
+
+.nova-block {
+  margin-top: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+.nova-findings {
+  display: grid;
+  gap: 10px;
+  padding: 14px 0;
+  border-top: 1px solid var(--n-divider);
+  border-bottom: 1px solid var(--n-divider);
+}
+
+.nova-finding {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.nova-finding__label {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.nova-finding__detail {
+  font-size: 0.8rem;
+  color: var(--n-muted);
+  margin-top: 2px;
+}
+
+.nova-finding__value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.nova-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nova-approval,
+.nova-plan,
+.nova-activity-card {
+  background: var(--n-surface);
+  border: 1px solid var(--n-border);
+  border-radius: var(--n-radius-lg);
+  padding: 18px;
+  box-shadow: var(--n-shadow-sm);
+}
+
+.nova-collab {
+  display: grid;
+  gap: 10px;
+  padding: 4px 0;
+}
+
+.nova-collab__step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.88rem;
+}
+
+.nova-collab__mark {
+  width: 18px;
+  text-align: center;
+  color: var(--n-muted);
+  font-size: 0.8rem;
+}
+
+.nova-composer-wrap {
+  padding: 12px 20px 20px;
+  background: linear-gradient(
+    transparent,
+    color-mix(in srgb, var(--n-bg) 92%, transparent) 28%,
+    var(--n-bg)
+  );
+}
+
+.nova-composer {
+  max-width: 680px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.nova-composer__box {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  border: 1px solid var(--n-border);
+  border-radius: var(--n-radius-xl);
+  padding: 10px 10px 10px 16px;
+  background: var(--n-surface);
+  box-shadow: var(--n-shadow);
+  transition: border-color var(--n-fast) var(--n-ease), box-shadow var(--n-fast) var(--n-ease);
+}
+
+.nova-composer__box:focus-within {
+  border-color: color-mix(in srgb, var(--n-accent) 45%, var(--n-border));
+  box-shadow: 0 0 0 3px var(--n-accent-soft), var(--n-shadow);
+}
+
+.nova-composer textarea {
+  flex: 1;
+  border: 0;
+  outline: none;
+  resize: none;
+  font: inherit;
+  font-size: 0.98rem;
+  line-height: 1.45;
+  max-height: 140px;
+  background: transparent;
+  color: var(--n-ink);
+  padding: 8px 0;
+}
+
+.nova-composer__meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding: 0 4px;
+  font-size: 0.72rem;
+  color: var(--n-tertiary);
+}
+
+.nova-mention-menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 8px);
+  background: var(--n-elevated);
+  border: 1px solid var(--n-border);
+  border-radius: var(--n-radius-lg);
+  box-shadow: var(--n-shadow-lg);
+  overflow: hidden;
+  z-index: 12;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.nova-mention-item {
+  display: flex;
+  width: 100%;
+  text-align: left;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition: background var(--n-fast) var(--n-ease);
+}
+
+.nova-mention-item:hover,
+.nova-mention-item.is-active {
+  background: var(--n-fill);
+}
+
+.nova-mention-item__title {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.nova-mention-item__blurb {
+  font-size: 0.78rem;
+  color: var(--n-muted);
+  margin-top: 2px;
+}
+
+/* —— Mobile —— */
+.nova-mobile-nav {
+  display: none;
+}
+
+.nova-overlay {
+  display: none;
+}
+
+.nova-menu-btn {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .nova-shell,
+  .nova-shell.is-collapsed,
+  .nova-shell.is-chat-context,
+  .nova-shell.is-collapsed.is-chat-context {
+    grid-template-columns: 1fr;
+  }
+
+  .nova-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(86vw, 300px);
+    z-index: 40;
+    transform: translateX(-105%);
+    transition: transform 220ms var(--n-ease);
+    box-shadow: var(--n-shadow-lg);
+    background: var(--n-surface);
+  }
+
+  .nova-shell.is-drawer-open .nova-sidebar {
+    transform: translateX(0);
+  }
+
+  .nova-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 35;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 220ms var(--n-ease);
+  }
+
+  .nova-shell.is-drawer-open .nova-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nova-context {
+    display: none !important;
+  }
+
+  .nova-menu-btn {
+    display: inline-flex;
+  }
+
+  .nova-page {
+    padding: 32px 20px 100px;
+  }
+
+  .nova-chat-top,
+  .nova-chat-stream {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .nova-mobile-nav {
+    display: flex;
+    border-top: 1px solid var(--n-divider);
+    background: color-mix(in srgb, var(--n-surface) 88%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+    justify-content: space-around;
+    z-index: 20;
+  }
+
+  .nova-mobile-nav a {
+    display: grid;
+    place-items: center;
+    gap: 2px;
+    text-decoration: none;
+    color: var(--n-muted);
+    font-size: 0.65rem;
+    font-weight: 560;
+    padding: 6px;
+    border-radius: 8px;
+  }
+
+  .nova-mobile-nav a.is-active {
+    color: var(--n-accent);
+  }
+}
+
+/* Compatibility aliases */
+.nova-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: var(--n-fill);
+  color: var(--n-ink);
+  text-decoration: none;
+  transition: background var(--n-fast) var(--n-ease), color var(--n-fast) var(--n-ease);
+}
+.nova-btn:hover {
+  background: var(--n-fill-hover);
+}
+.nova-btn--primary {
+  background: var(--n-accent);
+  color: #fff;
+}
+.nova-btn--primary:hover {
+  filter: brightness(1.05);
+  background: var(--n-accent);
+}
+.nova-btn--ghost {
+  background: transparent;
+  color: var(--n-accent);
+}
+.nova-card {
+  background: var(--n-surface);
+  border: 1px solid var(--n-border);
+  border-radius: var(--n-radius-lg);
+  padding: 20px;
+  box-shadow: var(--n-shadow-sm);
+}
+.nova-h1 {
+  margin: 0;
+  font-size: clamp(1.85rem, 3vw, 2.15rem);
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.15;
+  color: var(--n-ink);
+}
+.nova-sub {
+  margin: 0.45rem 0 0;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--n-muted);
+  line-height: 1.45;
+}

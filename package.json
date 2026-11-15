@@ -1,0 +1,53 @@
+{
+  "name": "nova-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "main": "electron/main.cjs",
+  "productName": "NOVA",
+  "description": "NOVA — AI operating team (Electron desktop shell)",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "db:seed": "node scripts/seed.mjs",
+    "eval:rag": "node scripts/eval-rag.mjs",
+    "desktop": "electron .",
+    "desktop:dev": "node scripts/desktop-dev.mjs",
+    "nova:desktop": "node scripts/desktop-dev.mjs",
+    "nova:build": "node scripts/desktop-prod.mjs"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "framer-motion": "^13.0.0",
+    "globe.gl": "^2.46.1",
+    "lucide-react": "^1.52.0",
+    "mammoth": "^1.9.1",
+    "next": "^15.5.2",
+    "pdf-parse": "^1.1.1",
+    "pg": "^8.23.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "recharts": "^3.10.1",
+    "three": "^0.185.1",
+    "uuid": "^11.1.0",
+    "xlsx": "^0.18.5",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@tailwindcss/postcss": "^4.1.12",
+    "@types/node": "22.20.5",
+    "@types/pdf-parse": "^1.1.5",
+    "@types/pg": "^8.21.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "^19.1.7",
+    "@types/three": "^0.185.4",
+    "@types/uuid": "^10.0.0",
+    "electron": "^37.2.6",
+    "eslint": "^9.33.0",
+    "eslint-config-next": "^15.5.2",
+    "tailwindcss": "^4.1.12",
+    "typescript": "5.9.3"
+  }
+}
